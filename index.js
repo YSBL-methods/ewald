@@ -1,5 +1,6 @@
-var scatter = []
-var key = function (d) { return d.id; }
+var scale = 20;
+var scatter = [];
+var key = function (d) { return d.id; };
 var startAngle = Math.PI / 4;
 var svg = d3.select('svg')
     .call(d3.drag()
@@ -17,7 +18,7 @@ var point3d = d3._3d()
     .origin([250, 250])
     .rotateY(startAngle)
     .rotateX(-startAngle)
-    .scale(20);
+    .scale(scale);
 
 function processData(data) {
 
@@ -54,13 +55,19 @@ function posPointY(d) {
 function init() {
     var cnt = 0;
     scatter = [];
-    scatter.push({ x: 0, y: 0, z: 0, r: 100, opacity: 0.3, id: 'point_' + cnt++ });
-    for (var x = -5; x <= 5; x++) {
-        for (var y = -5; y <= 5; y++) {
-            for (var z = -5; z <= 5; z++) {
+    var radius = 8;
+    scatter.push({ x: 0, y: 0, z: 0, r: radius * scale, opacity: 0.3, id: 'point_' + cnt++ });
+    for (var x = -8; x <= 8; x++) {
+        for (var y = -8; y <= 8; y++) {
+            for (var z = -8; z <= 8; z++) {
                 var dist = Math.sqrt(x * x + y * y + z * z);
-                var opacity = (dist > 4.9 & dist < 5.1) ? 1.0 : 0.1;
-                scatter.push({ x: x, y: y, z: z, r: 1, opacity: opacity, id: 'point_' + cnt++ });
+                var opacity = 0.2;
+                var r = 1;
+                if (dist > radius - 0.1 & dist < radius + 0.1) {
+                    opacity = 1.0;
+                    r = 2;
+                }
+                scatter.push({ x: x, y: y, z: z, r: r, opacity: opacity, id: 'point_' + cnt++ });
             }
         }
     }
