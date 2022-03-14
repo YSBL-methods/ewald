@@ -1,14 +1,20 @@
-var origin = [480, 300], j = 10, scale = 20, scatter = [], yLine = [], xGrid = [], beta = 0, alpha = 0, key = function (d) { return d.id; }, startAngle = Math.PI / 4;
-var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g');
+var origin = [480, 300]
+var j = 10
+var scale = 20
+var scatter = []
+var yLine = []
+var beta = 0
+var alpha = 0
+var key = function (d) { return d.id; }
+var startAngle = Math.PI / 4;
+var svg = d3.select('svg')
+    .call(d3.drag()
+        .on('drag', dragged)
+        .on('start', dragStart)
+        .on('end', dragEnd))
+    .append('g');
 var color = d3.scaleOrdinal(d3.schemeCategory20);
 var mx, my, mouseX, mouseY;
-
-var grid3d = d3._3d()
-    .shape('GRID', 20)
-    .origin(origin)
-    .rotateY(startAngle)
-    .rotateX(-startAngle)
-    .scale(scale);
 
 var point3d = d3._3d()
     .x(function (d) { return d.x; })
@@ -19,16 +25,9 @@ var point3d = d3._3d()
     .rotateX(-startAngle)
     .scale(scale);
 
-var yScale3d = d3._3d()
-    .shape('LINE_STRIP')
-    .origin(origin)
-    .rotateY(startAngle)
-    .rotateX(-startAngle)
-    .scale(scale);
-
 function processData(data, tt) {
 
-    var points = svg.selectAll('circle').data(data[1], key);
+    var points = svg.selectAll('circle').data(data[0], key);
 
     points
         .enter()
@@ -61,20 +60,15 @@ function posPointY(d) {
 
 function init() {
     var cnt = 0;
-    xGrid = [], scatter = [], yLine = [];
+    scatter = [];
     for (var z = -j; z < j; z++) {
         for (var x = -j; x < j; x++) {
-            xGrid.push([x, 1, z]);
             scatter.push({ x: x, y: d3.randomUniform(0, -10)(), z: z, id: 'point_' + cnt++ });
         }
     }
 
-    d3.range(-1, 11, 1).forEach(function (d) { yLine.push([-j, -d, -j]); });
-
     var data = [
-        grid3d(xGrid),
         point3d(scatter),
-        yScale3d([yLine])
     ];
     processData(data, 1000);
 }
@@ -90,9 +84,7 @@ function dragged() {
     beta = (d3.event.x - mx + mouseX) * Math.PI / 230;
     alpha = (d3.event.y - my + mouseY) * Math.PI / 230 * (-1);
     var data = [
-        grid3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)(xGrid),
         point3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)(scatter),
-        yScale3d.rotateY(beta + startAngle).rotateX(alpha - startAngle)([yLine]),
     ];
     processData(data, 0);
 }
