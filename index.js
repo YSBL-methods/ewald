@@ -19,16 +19,25 @@ const sphere_material = new THREE.MeshBasicMaterial({
 const sphere = new THREE.Mesh(sphere_geometry, sphere_material);
 scene.add(sphere);
 
+function scale(value, min, max, min_scale, max_scale) {
+    if (value < min) return min_scale;
+    if (value > max) return max_scale;
+    const fraction = (value - min) / (max - min);
+    return min_scale + fraction * (max_scale - min_scale);
+}
+
 const min = 0;
 const max = 50;
 const spacing = 3;
 for (let x = min; x <= max; x += spacing) {
     for (let y = min; y <= max; y += spacing) {
         for (let z = min; z <= max; z += spacing) {
-            const dist = Math.sqrt(x * x + y * y + z * z);
-            const on_sphere = (dist > sphere_radius - 1 && dist < sphere_radius + 1);
-            const radius = on_sphere ? 0.3 : 0.05;
-            const colour = on_sphere ? 0x0e1505 : 0x466d1d;
+            const dist = Math.abs(Math.sqrt(x * x + y * y + z * z) - sphere_radius);
+            const radius = scale(dist, 0, 1, 0.3, 0.05);
+            const r = scale(dist, 0, 1, 14, 70);
+            const g = scale(dist, 0, 1, 21, 109);
+            const b = scale(dist, 0, 1, 5, 29);
+            const colour = new THREE.Color(r / 255, g / 255, b / 255);
             const point_geometry = new THREE.SphereGeometry(radius, 8, 8);
             const point_material = new THREE.MeshBasicMaterial({ color: colour });
             const point = new THREE.Mesh(point_geometry, point_material);
