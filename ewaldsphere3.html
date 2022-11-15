@@ -1,198 +1,154 @@
-<html>
-
-<head>
-  <title>Ewald Sphere Tutorial</title>
-  
-  <style type="text/css">
-
-  body{font-family:"sans-serif";}
-  table{border-collapse:collapse;margin-left:auto;margin-right:auto;}
-  .menu{padding:1px 10px 1px 10px;background-color:green;text-decoration:none;font-size:24px;color:white;}
-
-nav {
-  float: left;
-  width: 200px;
-  height: 650px; /* only for demonstration, should be removed */
-  background: rgb(255, 255, 255);
-  padding: 5px;
-  outline-style: solid;
-  outline-color: black;
-}
-
-instructions {
-  float: right;
-  padding: 5px;
-  width: 300px;
-  height: 650px; 
-  background-color: #ffffff;
-  outline-style: solid;
-  outline-color: black;
-  overflow-y:scroll;
-  
-  z-index:1
-  
-}
-h2 {
-    display: block;
-    font-size: 1.5em;
-    margin-block-start: 0.3em;
-    margin-block-end: 0.3em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
-    word-spacing: 2px;
-}
-
-section::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-
-
-  
-</style>
+<!DOCTYPE html>
+<title>Ewald Sphere Tutorial</title>
+<link rel="stylesheet" href="index.css">
 
 <body onload="setup();">
-  
-<div style="width:100%;padding:5px;">
-<a href="ewaldintro.html" class="menu">Introduction</a>
-<a href="ewaldsphere1.html" class="menu">1</a>
-<a href="ewaldsphere2.html" class="menu">2</a>
-<a href="ewaldsphere3.html" class="menu">3</a>
-</div>
 
   <nav>
-
-      <div style="position:absolute;left:10px;top:40px;width:198px;">
-      <br/><b>Rotate Around Z</b>
-      <input style="width:198px;" type="range" min="-45" max="45" value="0" class="slider" id="anglez">
-          <div style="position:absolute;left:0px;top:70px">
-            <button type="button" id="rotl5z">&#10226;</button>
-            <button type="button" id="rotl1z">&#8630;</button>
-          </div>
-          <div style="position:absolute;right:0px;top:70px">
-            <button type="button" id="rotr1z">&#8631;</button>
-            <button type="button" id="rotr5z">&#10227;</button>
-          </div>
-          <div style="position:absolute;left:70px;top:70px">
-              &theta; = <span id="thetaz">0</span>&deg;
-            </div>
-      </div>
-
-      <div style="position:absolute;left:10px;top:420px;width:198px;" >
-          <button type="button" id="clear">Clear detector</button>
-        
-            <button type="button" id="recentre">Reset view</button>
-        
-
-            <div style="position:absolute;left:0px;top:25px;width:198px;" >
-            <input type="checkbox" id="fullbeams" name="fullbeams" >
-
-            <label for = "fullbeams">Turn on Full Beams</label><br>
-          </div>
-      </div>
-
-
-
-      <div style="position:absolute;left:10px;top:680px;width:198px;height:10px;" >
-      <label for ="camera" style="position:absolute;left:40px;top:-28px">Rotate camera</label>
-        <input style="width:198px" type="range" min="0" max="180" value="45" class="slider" id="camera">
-
-
-
-    <div style="position:relative;left:2px;bottom:230px">
-      <form>
-        <label for ="a">Enter Unit Cell Length a in &#8491;</label>
-        <input  type ="number" id= "a" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
-    </form>
-    <form>
-      <label for ="b">Enter Unit Cell Length b in &#8491;</label>
-        <input  type ="number" id= "b" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
-    </form>
-    <form>
-      <label for ="c">Enter Unit Cell Length c in &#8491;</label>
-        <input  type ="number" id= "c" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
-    </form>
-    <form>
-      <label for ="alpha">Enter Unit Cell angle alpha in &deg;</label>
-        <input  type ="number" id= "alpha" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
-    </form>
-    <form>
-      <label for ="beta">Enter Unit Cell angle beta in &deg;</label>
-        <input  type ="number" id= "beta" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
-    </form>
-    </div>
+    <a href="ewaldintro.html">Introduction</a>
+    <a href="ewaldsphere1.html">1</a>
+    <a href="ewaldsphere2.html">2</a>
+    <a href="ewaldsphere3.html">3</a>
   </nav>
-  
-  <instructions>
-    <h2>Paralellipiped unit cell bragg diffraction</h2>
-<p>
-  First we will look at Bragg diffraction and how this leads to the Ewald sphere.
-</p>
-<p>
-  The top panel on the left shows a crystal in an X-ray diffraction experiment. The X-ray beam comes from the left, and is diffracted by the crystal. Diffraction spots will form on the screen on the right. The crystal cell parameters are a=3 &#8491;, b=4 &#8491; and c=5 &#8491;, and the X-ray beam has a wavelength of 1.5 &#8491;. The slider above the crystal and the buttons below allow the crystal to be rotated to vary the angle &theta; between the incident beam and the (0,1,0) Bragg planes. Try rotating the crystal now.
-</p>
-<p>
-  The bottom panel on the right shows the crystal lattice and the X-ray waves diffracted from atoms at two lattice points, lying on the (0,1,0) Bragg planes. These Bragg planes are initially horizontal, and can be seen as rows of 5 atoms. As you rotate the crystal, the diffracted beam moves so that the angle of inciindence is equal to the angle of diffraction, and so the diffracted beam is at an angle of 2&theta; to the incident beam.
-</p>
-<p>
-  The diffraction vector <b><u>S</u></b>, which is the difference between the diffracted beam vector and the straight through beam vector, is shown as a blue arrow, which grows as you rotate the crystal. Note that this vector is always perpendicular to the Bragg planes. As the crystal is rotated, the tip of the diffraction vector traces out a circle around the crystal. If we were to rotate the crystal around another axis, the diffraction vector would trace out the surface of a sphere, which we call the <a href="https://en.wikipedia.org/wiki/Ewald%27s_sphere">Ewald sphere</a>.
-</p>
-<p>
-  If you rotate the crystal slowly, you will see that the two diffracted beams gradually go out of phase and then come back into phase again, when &theta; is about 11&deg;. This is a direction of constructive interference, where this set of Bragg planes will lead to a diffraction spot. Constructive interference occurs because the path difference between the two beams is equal to one whole wavelength, bringing the beams back into phase. A small blue marker is placed on the Ewald sphere at this point.
-</p>
-<p>
-  If you rotate the crystal further in the same direction, you can find two more angles at which the beams are in phase. These correspond to path differences of 2 and 3 wavelengths. They also correspond to a path difference of 1 wavelength for the more closely spaced (0,2,0) and (0,3,0) Bragg planes. The length of the diffraction vector is inversely proportional to the spacing of these planes. The length of the vector is also proportional to 2sin(&theta;). (The position of the spots on the detector is related to tan(2&theta;) however, which is why the lines of spots are slightly curved.)
-</p>
+
+  <div class="controls">
+    <div>
+      <label>Rotate Around Z</label><br>
+      <input type="range" min="-45" max="45" value="0" id="anglez"><br>
+      <button id="rotl5z">&#10226;</button>
+      <button id="rotl1z">&#8630;</button>
+      <span>&theta; = <span id="thetaz">0</span>&deg;</span>
+      <button id="rotr1z">&#8631;</button>
+      <button id="rotr5z">&#10227;</button>
+    </div>
+    <div>
+      <button id="clear">Clear detector</button>
+      <button id="recentre">Reset view</button>
+    </div>
+    <div>
+      <input type="checkbox" id="fullbeams" name="fullbeams">
+      <label for="fullbeams">Turn on Full Beams</label>
+    </div>
+    <div>
+      <label for="a">Enter Unit Cell Length a in &#8491;</label><br>
+      <input type="number" id="a" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="b">Enter Unit Cell Length b in &#8491;</label><br>
+      <input type="number" id="b" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="c">Enter Unit Cell Length c in &#8491;</label><br>
+      <input type="number" id="c" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="alpha">Enter Unit Cell angle alpha in &deg;</label><br>
+      <input type="number" id="alpha" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
+    </div>
+    <div>
+      <label for="beta">Enter Unit Cell angle beta in &deg;</label><br>
+      <input type="number" id="beta" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
+    </div>
+    <div>
+      <label>Rotate camera</label><br>
+      <input type="range" min="0" max="180" value="45" class="slider" id="camera">
     </div>
   </div>
-</div>
-</instructions>
-  <div id="mydiv" style="position:relative;left:3px; width:1400px;z-index:-1; outline-style: solid;
-  outline-color: black;"></div>
 
+  <canvas id="canvas"></canvas>
 
-</body>
-<script>
-  var spacinga = 100/10
-  var spacingb = 100/10
-  var spacingc = 100/10
-  var alpha = 30
-  var beta = 30
+  <div class="instructions">
+    <h2>Paralellipiped unit cell bragg diffraction</h2>
+    <p>First we will look at Bragg diffraction and how this leads to the Ewald sphere.</p>
+    <p>
+      The top panel on the left shows a crystal in an X-ray diffraction experiment.
+      The X-ray beam comes from the left, and is diffracted by the crystal.
+      Diffraction spots will form on the screen on the right.
+      The crystal cell parameters are a=3 &#8491;, b=4 &#8491; and c=5 &#8491;,
+      and the X-ray beam has a wavelength of 1.5 &#8491;.
+      The slider above the crystal and the buttons below
+      allow the crystal to be rotated to vary
+      the angle &theta; between the incident beam and the (0,1,0) Bragg planes.
+      Try rotating the crystal now.
+    </p>
+    <p>
+      The bottom panel on the right shows the crystal lattice
+      and the X-ray waves diffracted from atoms at two lattice points,
+      lying on the (0,1,0) Bragg planes.
+      These Bragg planes are initially horizontal, and can be seen as rows of 5 atoms.
+      As you rotate the crystal, the diffracted beam moves
+      so that the angle of inciindence is equal to the angle of diffraction,
+      and so the diffracted beam is at an angle of 2&theta; to the incident beam.
+    </p>
+    <p>
+      The diffraction vector <b><u>S</u></b>, which is the difference
+      between the diffracted beam vector and the straight through beam vector,
+      is shown as a blue arrow, which grows as you rotate the crystal.
+      Note that this vector is always perpendicular to the Bragg planes.
+      As the crystal is rotated, the tip of the diffraction vector
+      traces out a circle around the crystal.
+      If we were to rotate the crystal around another axis,
+      the diffraction vector would trace out the surface of a sphere, which we call the
+      <a href="https://en.wikipedia.org/wiki/Ewald%27s_sphere">Ewald sphere</a>.
+    </p>
+    <p>
+      If you rotate the crystal slowly, you will see that
+      the two diffracted beams gradually go out of phase
+      and then come back into phase again, when &theta; is about 11&deg;.
+      This is a direction of constructive interference,
+      where this set of Bragg planes will lead to a diffraction spot.
+      Constructive interference occurs because the path difference between the two beams
+      is equal to one whole wavelength, bringing the beams back into phase.
+      A small blue marker is placed on the Ewald sphere at this point.
+    </p>
+    <p>
+      If you rotate the crystal further in the same direction,
+      you can find two more angles at which the beams are in phase.
+      These correspond to path differences of 2 and 3 wavelengths.
+      They also correspond to a path difference of 1 wavelength
+      for the more closely spaced (0,2,0) and (0,3,0) Bragg planes.
+      The length of the diffraction vector
+      is inversely proportional to the spacing of these planes.
+      The length of the vector is also proportional to 2sin(&theta;).
+      (The position of the spots on the detector is related to tan(2&theta;) however,
+      which is why the lines of spots are slightly curved.)
+    </p>
+  </div>
 
- 
-</script>
-
-<script src="three.js"></script>
-<script src="OrbitControls.js"></script>
-<script src="index.js"></script>
-<script>
-  function updateunitcelldimensions(){
-      var A = document.getElementById("a").value; 
-      var B = document.getElementById("b").value; 
-      var C = document.getElementById("c").value; 
+  <script>
+    var spacinga = 100 / 10;
+    var spacingb = 100 / 10;
+    var spacingc = 100 / 10;
+    var alpha = 30;
+    var beta = 30;
+  </script>
+  <script src="three.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="index.js"></script>
+  <script>
+    function updateunitcelldimensions() {
+      var A = document.getElementById("a").value;
+      var B = document.getElementById("b").value;
+      var C = document.getElementById("c").value;
       var Alpha = document.getElementById("alpha").value;
-      var Beta = document.getElementById("beta").value;  
-      if (A>=5 && A<=15) {
-          if (B>=5 && B<=15){
-              if(C>=5 && C<=15){
-                  if(Alpha<=45){
-                      if(Beta<=45){
-                          spacinga = Number(100/A);
-                          spacingb = Number(100/B);
-                          spacingc = Number(100/C);
-                          alpha = Number(Alpha);
-                          beta = Number(Beta);
-                          updateunitcell();
-                          reset()
-                      }
-                  }
-              } 
+      var Beta = document.getElementById("beta").value;
+      if (A >= 5 && A <= 15) {
+        if (B >= 5 && B <= 15) {
+          if (C >= 5 && C <= 15) {
+            if (Alpha <= 45) {
+              if (Beta <= 45) {
+                spacinga = Number(100 / A);
+                spacingb = Number(100 / B);
+                spacingc = Number(100 / C);
+                alpha = Number(Alpha);
+                beta = Number(Beta);
+                updateunitcell();
+                reset();
+              }
+            }
           }
-      } 
-      
-  }
-</script>
-</html>
+        }
+      }
+    }
+  </script>
+</body>
