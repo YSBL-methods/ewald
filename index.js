@@ -372,11 +372,8 @@ controls.enabled = false;
 
 function animate() {
     const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
     }
