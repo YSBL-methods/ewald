@@ -6,35 +6,72 @@
 
 body {
   font-family: "sans-serif";
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  width: 100vw;
+  height: 100vh;
   padding: 20px;
+  display: grid;
+  grid-template-columns: auto 2fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "nav      nav    nav"
+    "controls canvas instructions";
+}
+
+@media (max-aspect-ratio: 3/2) {
+  body {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr 20em;
+    grid-template-areas:
+      "nav          nav"
+      "controls     canvas"
+      "instructions instructions";
+  }
+}
+
+nav {
+  grid-area: nav;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
 }
 
 nav a {
-  padding: 1px 10px 1px 10px;
+  padding: 1px 10px;
   background-color: green;
   text-decoration: none;
   font-size: 24px;
   color: white;
 }
 
-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .controls {
+  grid-area: controls;
+  padding: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: safe center;
   align-items: center;
-  gap: 15px;
   text-align: center;
+  gap: 15px;
+  overflow: scroll;
+}
+
+canvas {
+  grid-area: canvas;
+  width: 100%;
+  height: 100%;
+}
+
+.instructions {
+  grid-area: instructions;
+  padding: 10px;
+  overflow: scroll;
 }
 
 .instructions p,
 .instructions h2 {
   margin-bottom: 1em;
+}
+
+.controls, canvas, .instructions {
+  border: solid black;
 }
