@@ -55,7 +55,8 @@ nav a {
   overflow: scroll;
 }
 
-button {
+button,
+input {
   font-size: 1em;
   padding: 2px 5px;
 }

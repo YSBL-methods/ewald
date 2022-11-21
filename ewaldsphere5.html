@@ -32,19 +32,19 @@
       <label for="fullbeams">Show Full Beams</label>
     </div>
     <div>
-      <label for="a">Enter Unit Cell Length a in &#8491;</label><br>
+      <label for="a">Unit Cell Length a in &#8491;</label><br>
       <input type="number" id="a" min="5" max="15" onchange="updateunitcelldimensions()" value="8">
     </div>
     <div>
-      <label for="b">Enter Unit Cell Length b in &#8491;</label><br>
+      <label for="b">Unit Cell Length b in &#8491;</label><br>
       <input type="number" id="b" min="5" max="15" onchange="updateunitcelldimensions()" value="8">
     </div>
     <div>
-      <label for="c">Enter Unit Cell Length c in &#8491;</label><br>
+      <label for="c">Unit Cell Length c in &#8491;</label><br>
       <input type="number" id="c" min="5" max="15" onchange="updateunitcelldimensions()" value="12">
     </div>
     <div>
-      <label for="alpha">Enter Unit Cell angle alpha in &deg;</label><br>
+      <label for="alpha">Unit Cell angle alpha in &deg;</label><br>
       <input type="number" id="alpha" min="45" max="120" onchange="updateunitcelldimensions()" value="90">
     </div>
     <div>
@@ -57,11 +57,14 @@
 
   <div id="instructions">
     <h2>General unit cell powder diffraction</h2>
-    <p> The applet now shows an orthorhombic cell where the c axis is longer than the a and b axes (and so the reciprocal lattice spots are closer together on the axis going into the screen).
+    <p> The applet now shows an orthorhombic cell where the c axis is longer than the a and b axes (and so the
+      reciprocal lattice spots are closer together on the axis going into the screen).
     </p>
-    <p>If you rotate the crystal, you should see a lot more rings. This is because the (001) ring is no longer the same as the (100) and (010) rings. In fact every ring involving a non-zero l component is now different.
+    <p>If you rotate the crystal, you should see a lot more rings. This is because the (001) ring is no longer the same
+      as the (100) and (010) rings. In fact every ring involving a non-zero l component is now different.
     </p>
-    <p>If you chance the cell &alpha; angle to procude a monoclinic system, the pattern of rings should become even more complex. In this case a computer program would usually be needed to deduce the cell parameters.
+    <p>If you chance the cell &alpha; angle to procude a monoclinic system, the pattern of rings should become even more
+      complex. In this case a computer program would usually be needed to deduce the cell parameters.
     </p>
   </div>
 
@@ -85,9 +88,9 @@
       if (A >= 5 && A <= 15) {
         if (B >= 5 && B <= 15) {
           if (C >= 5 && C <= 15) {
-            spacinga = 100.0/Number(A);
-            spacingb = 100.0/Number(B);
-            spacingc = 100.0/Number(C);
+            spacinga = 100.0 / Number(A);
+            spacingb = 100.0 / Number(B);
+            spacingc = 100.0 / Number(C);
             alpha = Number(Alpha);
             beta = 90;
             updateunitcell();
