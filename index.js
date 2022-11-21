@@ -40,7 +40,7 @@ instintersectgeo.index = intersect_geometry.index;
 instintersectgeo.attributes.position = intersect_geometry.attributes.position;
 instintersectgeo.attributes.uv = intersect_geometry.attributes.uv;
 
-var point_geometry = new THREE.SphereBufferGeometry(0.5, 8, 8);
+var point_geometry = new THREE.SphereBufferGeometry(0.6, 8, 8);
 var instpointgeo = new THREE.InstancedBufferGeometry();
 instpointgeo.index = point_geometry.index;
 instpointgeo.attributes.position = point_geometry.attributes.position;
@@ -102,8 +102,8 @@ function setuplattice() {
                 let x = ix * spacinga
                 let y = iy * spacingb
                 let z = iz * spacingc
-                let y1 = y + x * (Math.tan(alpha * Math.PI / 180.0))
-                let z1 = z + x * (Math.tan(beta * Math.PI / 180.0))
+                let y1 = y + x * (Math.tan((90 - alpha) * Math.PI / 180.0))
+                let z1 = z + x * (Math.tan((90 - beta) * Math.PI / 180.0))
                 // x, y, z and flag to indicate inside/outside sphere
                 latticeSpots.push([x, y1, z1, 0]);
             }
@@ -188,7 +188,7 @@ function update_orientation() {
         var ys = V1.getComponent(1);
         var zs = V1.getComponent(2);
 
-        // EquaSphere is distance inside or outside sphere 
+        // EquaSphere is distance inside or outside sphere
         var EquaSphere = ((xs * xs) + (2 * r * xs) + (ys * ys) + (zs * zs));
         // Logic: if just crossed sphere, then it is visisble now
         //        if visible now for the first time, add to detector
@@ -213,8 +213,7 @@ function update_orientation() {
                     var xs = (xs * scalar) - r;
                     var ys = (ys * scalar);
                     var zs = (zs * scalar);
-                    if (ys != 0 && ys >= -m && ys <= m &&
-                        zs != 0 && zs >= -m && zs <= m) {  // spot on detector
+                    if (ys >= -m && ys <= m && zs >= -m && zs <= m) {  // spot on detector
                         if (document.querySelector('#fullbeams').checked === true) {
                             var points = [];
                             points.push(V2);
@@ -233,8 +232,15 @@ function update_orientation() {
                         if (Math.abs(fl) < 1.5) { // first time visible
                             fl = 2 * Math.sign(fl);
                             // create Diffraction spots and adds to Pattern group
-                            var DiffSpot = new THREE.Mesh((new THREE.CircleBufferGeometry(1, 32)), new THREE.MeshBasicMaterial({ color: 0xff00000 }));
-                            DiffSpot.position.set(xs, ys, zs);
+                            if (typeof powderpattern === 'undefined') {
+                                var DiffSpot = new THREE.Mesh((new THREE.CircleBufferGeometry(1.2, 32)), new THREE.MeshBasicMaterial({ color: 0x404040 }));
+                                DiffSpot.position.set(xs, ys, zs);
+                            } else {
+                                var rs = (ys ** 2 + zs ** 2) ** 0.5;
+                                var geom = new THREE.RingBufferGeometry(rs - 0.5, rs + 0.5, 64);
+                                var DiffSpot = new THREE.Mesh(geom, new THREE.LineBasicMaterial({ color: 0x404040 }));
+                                DiffSpot.position.set(xs, 0, 0);
+                            }
                             DiffSpot.rotateY(-Math.PI / 2);
                             patterngroup.add(DiffSpot);
                         }
@@ -290,7 +296,7 @@ function drawSphere() {
 //creates and draws unit Cell
 var unitCellgeo = new THREE.BoxBufferGeometry(a, b, c);
 var ShearMatrix = new THREE.Matrix4();
-ShearMatrix.makeShear(Math.tan(beta * Math.PI / 180.0), Math.tan(alpha * Math.PI / 180.0), 0, 0, 0, 0);
+ShearMatrix.makeShear(Math.tan((90 - beta) * Math.PI / 180.0), Math.tan((90 - alpha) * Math.PI / 180.0), 0, 0, 0, 0);
 unitCellgeo.applyMatrix4(ShearMatrix);
 const unitCelledges = new THREE.EdgesGeometry(unitCellgeo);
 unitCellMat = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -306,7 +312,7 @@ function drawunitcell() {
 
 function updateunitcell() {
     var unitCellgeo = new THREE.BoxBufferGeometry(a, b, c);
-    ShearMatrix.makeShear(Math.tan(beta * Math.PI / 180.0), Math.tan(alpha * Math.PI / 180.0), 0, 0, 0, 0);
+    ShearMatrix.makeShear(Math.tan((90 - beta) * Math.PI / 180.0), Math.tan((90 - alpha) * Math.PI / 180.0), 0, 0, 0, 0);
     unitCellgeo.applyMatrix4(ShearMatrix);
     unitcelledge.geometry = unitCellgeo
     unitCell.geometry = unitCellgeo
@@ -405,7 +411,7 @@ function clear() {
 
     resetBeams();
     animate();
-    //have to call update orientation to recreate the visual lattice 
+    //have to call update orientation to recreate the visual lattice
     update_orientation();
 }
 
@@ -440,10 +446,10 @@ function setup() {
     */
 
     document.getElementById("anglez").oninput = function () { update_orientation(); }
-    document.getElementById("rotl5z").onclick = function () { change_orientationz(-5); animate(); }
+    document.getElementById("rotl5z").onclick = function () { for (var c = 0; c < 5; c++) { change_orientationz(-1); animate(); } }
     document.getElementById("rotl1z").onclick = function () { change_orientationz(-1); animate(); }
     document.getElementById("rotr1z").onclick = function () { change_orientationz(1); animate(); }
-    document.getElementById("rotr5z").onclick = function () { change_orientationz(5); animate(); }
+    document.getElementById("rotr5z").onclick = function () { for (var c = 0; c < 5; c++) { change_orientationz(1); animate(); } }
 
     document.getElementById("clear").onclick = clear;
     document.getElementById("recentre").onclick = recentre;

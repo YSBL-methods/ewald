@@ -9,12 +9,14 @@
     <a href="ewaldsphere1.html">1</a>
     <a href="ewaldsphere2.html">2</a>
     <a href="ewaldsphere3.html">3</a>
+    <a href="ewaldsphere4.html">4</a>
+    <a href="ewaldsphere5.html">5</a>
   </nav>
 
   <div id="controls">
     <div>
-      <label>Rotate Around Z</label><br>
-      <input type="range" min="-45" max="45" value="0" id="anglez"><br>
+      <label>Rotate crystal around Z</label><br>
+      <input type="range" min="-45" max="45" value="0" id="anglez" hidden><br>
       <button id="rotl5z">&#10226;</button>
       <button id="rotl1z">&#8630;</button>
       <span>&theta; = <span id="thetaz">0</span>&deg;</span>
@@ -26,8 +28,8 @@
       <button id="recentre">Reset view</button>
     </div>
     <div>
-      <input type="checkbox" id="fullbeams" name="fullbeams">
-      <label for="fullbeams">Turn on Full Beams</label>
+      <input type="checkbox" id="fullbeams" name="fullbeams" Checked>
+      <label for="fullbeams">Show Full Beams</label>
     </div>
     <div>
       <label for="a">Enter Unit Cell Length in &#8491;</label><br>
@@ -103,22 +105,19 @@
     var spacinga = 100 / 20;
     var spacingb = 100 / 20;
     var spacingc = 100 / 20;
-    var alpha = 0;
-    var beta = 0;
+    var alpha = 90;
+    var beta = 90;
   </script>
   <script src="three.js"></script>
   <script src="OrbitControls.js"></script>
   <script src="index.js"></script>
   <script>
     function updateunitcelldimensions() {
-      spacinga = 100 / document.getElementById("a").value;
-      spacinga = Number(spacinga);
-      spacingb = 100 / document.getElementById("a").value;
-      spacingb = Number(spacingb);
-      spacingc = 100 / document.getElementById("a").value;
-      spacingc = Number(spacingc);
-      alpha = 0;
-      beta = 0;
+      spacinga = 100 / Number(document.getElementById("a").value);
+      spacingb = 100 / Number(document.getElementById("a").value);
+      spacingc = 100 / Number(document.getElementById("a").value);
+      alpha = 90;
+      beta = 90;
       updateunitcell();
       reset();
     }

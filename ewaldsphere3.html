@@ -9,12 +9,14 @@
     <a href="ewaldsphere1.html">1</a>
     <a href="ewaldsphere2.html">2</a>
     <a href="ewaldsphere3.html">3</a>
+    <a href="ewaldsphere4.html">4</a>
+    <a href="ewaldsphere5.html">5</a>
   </nav>
 
   <div id="controls">
     <div>
-      <label>Rotate Around Z</label><br>
-      <input type="range" min="-45" max="45" value="0" id="anglez"><br>
+      <label>Rotate crystal around Z</label><br>
+      <input type="range" min="-45" max="45" value="0" id="anglez" hidden><br>
       <button id="rotl5z">&#10226;</button>
       <button id="rotl1z">&#8630;</button>
       <span>&theta; = <span id="thetaz">0</span>&deg;</span>
@@ -26,8 +28,8 @@
       <button id="recentre">Reset view</button>
     </div>
     <div>
-      <input type="checkbox" id="fullbeams" name="fullbeams">
-      <label for="fullbeams">Turn on Full Beams</label>
+      <input type="checkbox" id="fullbeams" name="fullbeams" Checked>
+      <label for="fullbeams">Show Full Beams</label>
     </div>
     <div>
       <label for="a">Enter Unit Cell Length a in &#8491;</label><br>
@@ -43,11 +45,7 @@
     </div>
     <div>
       <label for="alpha">Enter Unit Cell angle alpha in &deg;</label><br>
-      <input type="number" id="alpha" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
-    </div>
-    <div>
-      <label for="beta">Enter Unit Cell angle beta in &deg;</label><br>
-      <input type="number" id="beta" min="0" max="45" onchange="updateunitcelldimensions()" value="30">
+      <input type="number" id="alpha" min="45" max="120" onchange="updateunitcelldimensions()" value="90">
     </div>
     <div>
       <label>Rotate camera</label><br>
@@ -119,8 +117,8 @@
     var spacinga = 100 / 10;
     var spacingb = 100 / 10;
     var spacingc = 100 / 10;
-    var alpha = 30;
-    var beta = 30;
+    var alpha = 90;
+    var beta = 90;
   </script>
   <script src="three.js"></script>
   <script src="OrbitControls.js"></script>
@@ -131,21 +129,16 @@
       var B = document.getElementById("b").value;
       var C = document.getElementById("c").value;
       var Alpha = document.getElementById("alpha").value;
-      var Beta = document.getElementById("beta").value;
       if (A >= 5 && A <= 15) {
         if (B >= 5 && B <= 15) {
           if (C >= 5 && C <= 15) {
-            if (Alpha <= 45) {
-              if (Beta <= 45) {
-                spacinga = Number(100 / A);
-                spacingb = Number(100 / B);
-                spacingc = Number(100 / C);
-                alpha = Number(Alpha);
-                beta = Number(Beta);
-                updateunitcell();
-                reset();
-              }
-            }
+            spacinga = 100.0 / Number(A);
+            spacingb = 100.0 / Number(B);
+            spacingc = 100.0 / Number(C);
+            alpha = Number(Alpha);
+            beta = 90;
+            updateunitcell();
+            reset();
           }
         }
       }
