@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<title>Ewald Sphere Tutorial</title>
+<link rel="stylesheet" href="index.css">
+
+<body onload="setup();">
+
+  <nav>
+    <a href="ewaldintro.html">Introduction</a>
+    <a href="ewaldsphere1.html">1</a>
+    <a href="ewaldsphere2.html">2</a>
+    <a href="ewaldsphere3.html">3</a>
+    <a href="ewaldsphere4.html">4</a>
+    <a href="ewaldsphere5.html">5</a>
+  </nav>
+
+  <div id="controls">
+    <div>
+      <label>Rotate crystal around Z</label><br>
+      <input type="range" min="-45" max="45" value="0" id="anglez" hidden><br>
+      <button id="rotl5z">&#10226;</button>
+      <button id="rotl1z">&#8630;</button>
+      <span>&theta; = <span id="thetaz">0</span>&deg;</span>
+      <button id="rotr1z">&#8631;</button>
+      <button id="rotr5z">&#10227;</button>
+    </div>
+    <div>
+      <button id="clear">Clear detector</button>
+      <button id="recentre">Reset view</button>
+    </div>
+    <div>
+      <input type="checkbox" id="fullbeams" name="fullbeams" Checked>
+      <label for="fullbeams">Show Full Beams</label>
+    </div>
+    <div>
+      <label for="a">Unit Cell Length a in &#8491;</label><br>
+      <input type="number" id="a" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="b">Unit Cell Length b in &#8491;</label><br>
+      <input type="number" id="b" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="c">Unit Cell Length c in &#8491;</label><br>
+      <input type="number" id="c" min="5" max="15" onchange="updateunitcelldimensions()" value="10">
+    </div>
+    <div>
+      <label for="alpha">Unit Cell angle alpha in &deg;</label><br>
+      <input type="number" id="alpha" min="45" max="120" onchange="updateunitcelldimensions()" value="90">
+    </div>
+    <div>
+      <label>Rotate camera</label><br>
+      <input type="range" min="0" max="180" value="45" id="camera">
+    </div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <div id="instructions">
+    <h2>Paralellipiped unit cell bragg diffraction</h2>
+    <p>First we will look at Bragg diffraction and how this leads to the Ewald sphere.</p>
+    <p>
+      The top panel on the left shows a crystal in an X-ray diffraction experiment.
+      The X-ray beam comes from the left, and is diffracted by the crystal.
+      Diffraction spots will form on the screen on the right.
+      The crystal cell parameters are a=3 &#8491;, b=4 &#8491; and c=5 &#8491;,
+      and the X-ray beam has a wavelength of 1.5 &#8491;.
+      The slider above the crystal and the buttons below
+      allow the crystal to be rotated to vary
+      the angle &theta; between the incident beam and the (0,1,0) Bragg planes.
+      Try rotating the crystal now.
+    </p>
+    <p>
+      The bottom panel on the right shows the crystal lattice
+      and the X-ray waves diffracted from atoms at two lattice points,
+      lying on the (0,1,0) Bragg planes.
+      These Bragg planes are initially horizontal, and can be seen as rows of 5 atoms.
+      As you rotate the crystal, the diffracted beam moves
+      so that the angle of inciindence is equal to the angle of diffraction,
+      and so the diffracted beam is at an angle of 2&theta; to the incident beam.
+    </p>
+    <p>
+      The diffraction vector <b><u>S</u></b>, which is the difference
+      between the diffracted beam vector and the straight through beam vector,
+      is shown as a blue arrow, which grows as you rotate the crystal.
+      Note that this vector is always perpendicular to the Bragg planes.
+      As the crystal is rotated, the tip of the diffraction vector
+      traces out a circle around the crystal.
+      If we were to rotate the crystal around another axis,
+      the diffraction vector would trace out the surface of a sphere, which we call the
+      <a href="https://en.wikipedia.org/wiki/Ewald%27s_sphere">Ewald sphere</a>.
+    </p>
+    <p>
+      If you rotate the crystal slowly, you will see that
+      the two diffracted beams gradually go out of phase
+      and then come back into phase again, when &theta; is about 11&deg;.
+      This is a direction of constructive interference,
+      where this set of Bragg planes will lead to a diffraction spot.
+      Constructive interference occurs because the path difference between the two beams
+      is equal to one whole wavelength, bringing the beams back into phase.
+      A small blue marker is placed on the Ewald sphere at this point.
+    </p>
+    <p>
+      If you rotate the crystal further in the same direction,
+      you can find two more angles at which the beams are in phase.
+      These correspond to path differences of 2 and 3 wavelengths.
+      They also correspond to a path difference of 1 wavelength
+      for the more closely spaced (0,2,0) and (0,3,0) Bragg planes.
+      The length of the diffraction vector
+      is inversely proportional to the spacing of these planes.
+      The length of the vector is also proportional to 2sin(&theta;).
+      (The position of the spots on the detector is related to tan(2&theta;) however,
+      which is why the lines of spots are slightly curved.)
+    </p>
+  </div>
+
+  <script>
+    var spacinga = 100 / 10;
+    var spacingb = 100 / 10;
+    var spacingc = 100 / 10;
+    var alpha = 90;
+    var beta = 90;
+  </script>
+  <script src="three.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="index.js"></script>
+  <script>
+    function updateunitcelldimensions() {
+      var A = document.getElementById("a").value;
+      var B = document.getElementById("b").value;
+      var C = document.getElementById("c").value;
+      var Alpha = document.getElementById("alpha").value;
+      if (A >= 5 && A <= 15) {
+        if (B >= 5 && B <= 15) {
+          if (C >= 5 && C <= 15) {
+            spacinga = 100.0 / Number(A);
+            spacingb = 100.0 / Number(B);
+            spacingc = 100.0 / Number(C);
+            alpha = Number(Alpha);
+            beta = 90;
+            updateunitcell();
+            reset();
+          }
+        }
+      }
+    }
+  </script>
+</body>

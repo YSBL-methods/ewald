@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<title>Ewald Sphere Tutorial</title>
+<link rel="stylesheet" href="index.css">
+
+<body onload="setup();">
+
+  <nav>
+    <a href="ewaldintro.html">Introduction</a>
+    <a href="ewaldsphere1.html">1</a>
+    <a href="ewaldsphere2.html">2</a>
+    <a href="ewaldsphere3.html">3</a>
+    <a href="ewaldsphere4.html">4</a>
+    <a href="ewaldsphere5.html">5</a>
+  </nav>
+
+  <div id="controls">
+    <div>
+      <label>Rotate crystal around Z</label><br>
+      <input type="range" min="-45" max="45" value="0" id="anglez" hidden><br>
+      <button id="rotl5z">&#10226;</button>
+      <button id="rotl1z">&#8630;</button>
+      <span>&theta; = <span id="thetaz">0</span>&deg;</span>
+      <button id="rotr1z">&#8631;</button>
+      <button id="rotr5z">&#10227;</button>
+    </div>
+    <div>
+      <button id="clear">Clear detector</button>
+      <button id="recentre">Reset view</button>
+    </div>
+    <div>
+      <input type="checkbox" id="fullbeams" name="fullbeams" Checked>
+      <label for="fullbeams">Show Full Beams</label>
+    </div>
+    <div>
+      <label for="a">Unit Cell Length in &#8491;</label><br>
+      <input type="number" id="a" min="10" max="20" onchange="updateunitcelldimensions()" value="6">
+    </div>
+    <div>
+      <label>Rotate camera</label><br>
+      <input type="range" min="0" max="180" value="45" id="camera">
+    </div>
+  </div>
+
+  <canvas id="canvas"></canvas>
+
+  <div id="instructions">
+    <h2>Cubic unit cell powder diffraction</h2>
+    <p>In the case of diffraction from a powder, we have a huge number of micro crystals in random orientations, which means that every possible diffraction spot will appear at once.
+    This also means that each spot will be smeared out into ring because different micro crystals will be in different orientations around the beam axis.
+    </p>
+    <p>The applet still shows a single (micro) crystal that you can rotate to see spots cross the Ewald sphere, however the diffraction pattern now shows the powder diffraction rings.
+    In reality these would all appear at once without rotating the crystal.</p>
+    <p>For a cubic crystal, the rings form an easily recognized pattern, corresponding to diffraction vectors whose lengths are in the ratios 1 : &radic;2 : &radic;3 : 2 : &radic;5 : &radic;6 : &radic;8 : 3, based on the possible values of <i>hkl</i> in the following equation:
+    <br><img src="eqn_cubic.png"><br>
+    The rings can be indexed by the <i>hkl</i> of the corresponding spots, i.e. (100), (110), (111), (200), (210), (211), (220), (300) and their permutations respectively. In some cases some of these rings can be missing due to the symmetries of the unit cell.
+    </p>
+  </div>
+
+  <script>
+    var spacinga = 100/6;
+    var spacingb = 100/6;
+    var spacingc = 100/6;
+    var alpha = 90;
+    var beta = 90;
+    var powderpattern = true;
+  </script>
+  <script src="three.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="index.js"></script>
+  <script>
+    function updateunitcelldimensions() {
+      spacinga = 100 / document.getElementById("a").value;
+      spacinga = Number(spacinga);
+      spacingb = 100 / document.getElementById("a").value;
+      spacingb = Number(spacingb);
+      spacingc = 100 / document.getElementById("a").value;
+      spacingc = Number(spacingc);
+      alpha = 90;
+      beta = 90;
+      updateunitcell();
+      reset();
+    }
+  </script>
+</body>
