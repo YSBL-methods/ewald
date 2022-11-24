@@ -1,3 +1,3 @@
 # Ewald Sphere
 
-https://ysbl-methods.github.io/ewald/ewaldsphere1.html
+https://ysbl-methods.github.io/ewald3d/ewaldsphere1.html
