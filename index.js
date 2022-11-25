@@ -40,15 +40,15 @@ instintersectgeo.index = intersect_geometry.index;
 instintersectgeo.attributes.position = intersect_geometry.attributes.position;
 instintersectgeo.attributes.uv = intersect_geometry.attributes.uv;
 
-var point_geometry = new THREE.SphereBufferGeometry(0.6, 8, 8);
+var point_geometry = new THREE.SphereBufferGeometry(0.75, 8, 8);
 var instpointgeo = new THREE.InstancedBufferGeometry();
 instpointgeo.index = point_geometry.index;
 instpointgeo.attributes.position = point_geometry.attributes.position;
 instpointgeo.attributes.uv = point_geometry.attributes.uv;
 
 var point_material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-var linematerial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 5 });
-
+var linematerial   = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 5 });
+var linematerial2  = new THREE.LineBasicMaterial({ color: 0x808080, linewidth: 1.5 });
 
 var patternGeometry = new THREE.CircleBufferGeometry(0.5, 8);
 var instpatterngeo = new THREE.InstancedBufferGeometry();
@@ -225,7 +225,7 @@ function update_orientation() {
                         }
                         // creates lines and addes them to Beams group
                         var linegeometry = new THREE.BufferGeometry().setFromPoints(points);
-                        var line = new THREE.Line(linegeometry, linematerial);
+                        var line = new THREE.Line(linegeometry, linematerial2);
                         linegeometry.dispose();
                         Beams.add(line);
 
@@ -233,7 +233,7 @@ function update_orientation() {
                             fl = 2 * Math.sign(fl);
                             // create Diffraction spots and adds to Pattern group
                             if (typeof powderpattern === 'undefined') {
-                                var DiffSpot = new THREE.Mesh((new THREE.CircleBufferGeometry(1.2, 32)), new THREE.MeshBasicMaterial({ color: 0x404040 }));
+                                var DiffSpot = new THREE.Mesh((new THREE.CircleBufferGeometry(1.5, 32)), new THREE.MeshBasicMaterial({ color: 0x404040 }));
                                 DiffSpot.position.set(xs, ys, zs);
                             } else {
                                 var rs = (ys ** 2 + zs ** 2) ** 0.5;

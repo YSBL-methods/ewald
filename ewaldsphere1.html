@@ -33,7 +33,7 @@
     </div>
     <div>
       <label for="a">Unit Cell Length in &#8491;</label><br>
-      <input type="number" id="a" min="10" max="20" onchange="updateunitcelldimensions()" value="20">
+      <input type="number" id="a" min="10" max="20" onchange="updateunitcelldimensions()" value="6">
     </div>
     <div>
       <label>Rotate camera</label><br>
@@ -44,68 +44,33 @@
   <canvas id="canvas"></canvas>
 
   <div id="instructions">
-    <h2>Cubic unit cell bragg diffraction</h2>
-
-    <p>First we will look at Bragg diffraction and how this leads to the Ewald sphere.</p>
+    <h2>Cubic unit cell diffraction</h2>
+    <p>First we will look at the Ewald sphere in 3D, and how it tells us about the diffraction pattern.</p>
     <p>
-      The top panel on the left shows a crystal in an X-ray diffraction experiment.
-      The X-ray beam comes from the left, and is diffracted by the crystal.
-      Diffraction spots will form on the screen on the right.
-      The crystal cell parameters are a=3 &#8491;, b=4 &#8491; and c=5 &#8491;,
-      and the X-ray beam has a wavelength of 1.5 &#8491;.
-      The slider above the crystal and the buttons below
-      allow the crystal to be rotated to vary
-      the angle &theta; between the incident beam and the (0,1,0) Bragg planes.
-      Try rotating the crystal now.
+      In the centre panel, you can see a diffraction experiment with an X-ray beam hitting a crystal from the left.
+      On the right is a detector, which is initially blank.
+      The Ewald sphere is shown in red, with the reciprocal lattice centred on its surface.
+      Remember that the Ewald sphere and the reciprocal lattice are not real, they are mathematical constructions which
+      tell us when the conditions for diffraction are met - whenever a reciprocal lattice spot crosses the Ewald sphere.
     </p>
     <p>
-      The bottom panel on the right shows the crystal lattice
-      and the X-ray waves diffracted from atoms at two lattice points,
-      lying on the (0,1,0) Bragg planes.
-      These Bragg planes are initially horizontal, and can be seen as rows of 5 atoms.
-      As you rotate the crystal, the diffracted beam moves
-      so that the angle of inciindence is equal to the angle of diffraction,
-      and so the diffracted beam is at an angle of 2&theta; to the incident beam.
+      In the left panel are the controls. The buttons at the top rotate the crystal (and the reciprocal lattice rotates with it).
+      When it is rotated far enough for a spot to cross the Ewald sphere, this will be highlighted on the sphere with a blue
+      dot, a line will be drawn following the diffracted beam from the crystal to the detector, and a spot will appear on the detector.
+      Use the &cularr; button to rotate the crystal to &theta; = 8&deg;, and you should see the (010) spot appear. (h is to the right, k is up, and l is out of the screen.)
+      Use the slider at the bottom of the controls to look at the scene from different angles.
     </p>
     <p>
-      The diffraction vector <b><u>S</u></b>, which is the difference
-      between the diffracted beam vector and the straight through beam vector,
-      is shown as a blue arrow, which grows as you rotate the crystal.
-      Note that this vector is always perpendicular to the Bragg planes.
-      As the crystal is rotated, the tip of the diffraction vector
-      traces out a circle around the crystal.
-      If we were to rotate the crystal around another axis,
-      the diffraction vector would trace out the surface of a sphere, which we call the
-      <a href="https://en.wikipedia.org/wiki/Ewald%27s_sphere">Ewald sphere</a>.
-    </p>
-    <p>
-      If you rotate the crystal slowly, you will see that
-      the two diffracted beams gradually go out of phase
-      and then come back into phase again, when &theta; is about 11&deg;.
-      This is a direction of constructive interference,
-      where this set of Bragg planes will lead to a diffraction spot.
-      Constructive interference occurs because the path difference between the two beams
-      is equal to one whole wavelength, bringing the beams back into phase.
-      A small blue marker is placed on the Ewald sphere at this point.
-    </p>
-    <p>
-      If you rotate the crystal further in the same direction,
-      you can find two more angles at which the beams are in phase.
-      These correspond to path differences of 2 and 3 wavelengths.
-      They also correspond to a path difference of 1 wavelength
-      for the more closely spaced (0,2,0) and (0,3,0) Bragg planes.
-      The length of the diffraction vector
-      is inversely proportional to the spacing of these planes.
-      The length of the vector is also proportional to 2sin(&theta;).
-      (The position of the spots on the detector is related to tan(2&theta;) however,
-      which is why the lines of spots are slightly curved.)
+      Continue rotate the crystal to &theta; = 15&deg;, at which point 3 more spots will appear: (011), (01<span style="text-decoration:overline">1</span>), and (020).
+      At what angle do the (021) and (02<span style="text-decoration:overline">1</span>) spots appear?
+      If you continue to rotate the crystal to &theta; = 30&deg; some spots appear on the bottom half of the detector. These have a different h value. Can you deduce their indices?
     </p>
   </div>
 
   <script>
-    var spacinga = 100 / 20;
-    var spacingb = 100 / 20;
-    var spacingc = 100 / 20;
+    var spacinga = 100 / 3;
+    var spacingb = 100 / 3;
+    var spacingc = 100 / 3;
     var alpha = 90;
     var beta = 90;
   </script>
