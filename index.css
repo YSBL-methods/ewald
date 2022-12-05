@@ -8,7 +8,7 @@ body {
   font-family: sans-serif;
   width: 100vw;
   height: 100vh;
-  padding: 20px;
+  padding: 10px;
   display: grid;
   grid-template-columns: auto 2fr 1fr;
   grid-template-rows: auto 1fr;
@@ -30,16 +30,16 @@ body {
 
 nav {
   grid-area: nav;
-  margin-bottom: 20px;
+  margin-bottom: 6px;
   display: flex;
-  gap: 10px;
+  gap: 6px;
 }
 
 nav a {
   padding: 1px 10px;
   background-color: green;
   text-decoration: none;
-  font-size: 1.5em;
+  font-size: 24px;
   color: white;
 }
 
@@ -81,5 +81,5 @@ input {
 #controls,
 #canvas,
 #instructions {
-  border: solid black;
+  border: solid black 1px;
 }
